@@ -1,0 +1,23 @@
+{
+  "name": "ct-palms-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rose-water/ct-palms-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rose-water/ct-palms-web/issues"
+  },
+  "homepage": "https://github.com/rose-water/ct-palms-web#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
