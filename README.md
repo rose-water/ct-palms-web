@@ -1,5 +1,4 @@
-# Creative Technology I
-# LA Embedded Device
+# Creative Technology I: LA Embedded Device
 ### Rachel Rose Waterhouse
 ### Tingyi Li
 
@@ -8,14 +7,13 @@
 Brief goes here
 
 -----
-## SETUP
-
 ### I. Credentials
-This project uses the [Adafruit IO MQTT](https://io.adafruit.com/api/docs/mqtt.html#adafruit-io-mqtt-api).
+This project uses the [Adafruit IO MQTT API](https://io.adafruit.com/api/docs/mqtt.html#adafruit-io-mqtt-api).
 
 You will need to create a `.env` file with your adafruit.io username and password, so that these lines in `server.js` work:
 
 `process.env.ADAFRUIT_USERNAME`
+
 `process.env.ADAFRUIT_PW`
 
 Alternatively replace them with your username and password directly, but make sure not to push that change to Github 😎.
@@ -31,13 +29,14 @@ Make sure you have Node and NPM installed. I use [Homebrew](https://brew.sh/) fo
 In your terminal:
 
 `npm install` to install node dependencies.
+
 `npm start` to start the server.
 
-Alternatively, install [Nodemon](https://www.npmjs.com/package/nodemon) to automatically restart your server when saving changes:
+Alternatively, install [Nodemon](https://www.npmjs.com/package/nodemon) to automatically restart your server whenever you save changes:
 
 `npm run dev`
 
-Finally, navigate to `localhost:3333` in a web browser.
+Finally, navigate to `localhost:3333` in your web browser.
 
 
 ---

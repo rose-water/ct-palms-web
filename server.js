@@ -3,17 +3,19 @@ const path    = require('path');
 const mqtt    = require('mqtt');
 const PORT    = 3333;
 const app     = express();
+require('dotenv').config();
 
 // MQTT client setup
-const mqttClient = mqtt.connect('mqtts://io.adafruit.com',{
-  port     : 8883,
-  username : process.env.ADAFRUIT_USERNAME,
-  password : process.env.ADAFRUIT_PW
-});
+const mqttClient = mqtt.connect('mqtts://io.adafruit.com',
+  {
+    port     : 8883,
+    username : process.env.ADAFRUIT_USERNAME,
+    password : process.env.ADAFRUIT_PW
+  }
+);
 
 mqttClient.on('connect', () => {
-  // mqttClient.subscribe('/hello');
-  // mqttClient.publish('presence', 'Hello mqtt');
+  console.log('MQTT client connected.')
 });
 
 // EXPRESS server setup
@@ -26,5 +28,5 @@ app.get('/', (req, res) => {
 
 // Listen on PORT
 app.listen(PORT, () => {
-  console.log('listening on PORT: ' + PORT);
+  console.log('Listening on PORT: ' + PORT);
 });
