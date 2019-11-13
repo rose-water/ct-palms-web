@@ -3,15 +3,31 @@ const path    = require('path');
 const mqtt    = require('mqtt');
 const PORT    = 3333;
 const app     = express();
+const server  = require('http').createServer(app);
+const io      = require('socket.io')(server);
 require('dotenv').config();
 
 // -------------------------------------------------------------
 // MQTT client setup
-
-let baseUrl = 'rosewater/feeds/';
+let baseUrl = `${ process.env.ADAFRUIT_USERNAME }/feeds/`;
 
 // Eventually subscribe to a list of topics, each corresponding
 // to specific devices + MAC addresses?
+
+// Is this the right order?
+// 1. esp32 device boots up, connects to wifi.
+// 2. esp32 device subs to designated topic, as well as another 
+//    generic topic to notify node that a device is available.
+// 3. Interaction happens on the device, outputs url for user
+// 4. User on phone navigates to url, will choose city and
+//    country on webpage along with device ID (from url?), sent 
+//    as a POST request 
+// 5. Server handles POST request and gets country and citydata 
+//    from query, pubs to topic (from query also). 
+
+// I guess the topics list should be an imported file
+// I wonder if there's a way to import a list of topics to 
+// Adafruit? OR IS IT MANUAL :(
 let topicsList = [ 'testTopic' ];
 
 const mqttClient = mqtt.connect('mqtts://io.adafruit.com',
@@ -47,6 +63,6 @@ app.get('/', (req, res) => {
 });
 
 // Listen on PORT
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log('Listening on PORT: ' + PORT);
 });
