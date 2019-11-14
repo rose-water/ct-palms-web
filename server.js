@@ -55,12 +55,35 @@ mqttClient.on('message', (topic, message) => {
 
 // -------------------------------------------------------------
 // EXPRESS server setup
-app.use(express.static(__dirname));
+app.use(express.static('public'));
 
 // Root route - serve index.html (map)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Palm route - serve a form
+// localhost:3333?palmId=brazil-palm-01
+app.get('/palms/:palmId', (req, res) => {
+  
+});
+
+app.get('/maps/livemap', (req, res) => {
+  
+});
+
+app.get('/maps/allMarkers', (req, res) => {
+ 
+});
+
+app.get('/countryData', (req, res) => {
+  
+});
+
+app.get('/citiesData', (req, res) => {
+  
+});
+
 
 // Listen on PORT
 server.listen(PORT, () => {

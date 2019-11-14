@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>LA Palms + People Provenance</title>
+    <title>LA + Palm Tree Provenance</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <h1>MAP GOES HERE</h1>
+    <div id="container">
+      <span id="greeting-msg"></span>
+      <div id="form-container">
+        <form id="location-form">
+          <select class="dropdown" id="country-list"></select>
+        </form>
+        <button id="send-btn">SEND</button>
+      </div>
+    </div>
+    <script src="js/sketch.js" type="module"></script>
   </body>
 </html>
