@@ -67,19 +67,22 @@ io.on('connection', client => {
 // -------------------------------------------------------------
 // EXPRESS server setup
 app.use(express.static('public'));
+// app.use(express.static('public', { index: false } ));
 
-// Root route - serve index.html (map)
+// Root route - redirect to map
 app.get('/', (req, res) => {
+  // TODO currently not working for some reason
+  res.redirect('/maps/livemap');
+});
+
+// Should serve the form
+// localhost:3333?palmId=brazil-palm-01
+app.get('/palms/:palmId', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// localhost:3333?palmId=brazil-palm-01
-app.get('/palms/:palmId', (req, res) => {
-  
-});
-
 app.get('/maps/livemap', (req, res) => {
-  
+  res.sendFile(path.join(__dirname, 'public', 'livemap.html'));
 });
 
 app.get('/maps/allMarkers', (req, res) => {
