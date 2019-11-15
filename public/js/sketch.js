@@ -1,28 +1,33 @@
 import { countries } from './countries.js'
 
-let greetingElem = document.getElementById('greeting-msg');
+let greetingElem    = document.getElementById('greeting-msg');
 let countryListElem = document.getElementById('country-list');
-let sendBtn = document.getElementById('send-btn');
+let sendBtn         = document.getElementById('send-btn');
+
+let url    = new URL(window.location);
+let socket = io.connect();
+let palmId = url.searchParams.get('palmId');
+
+socket.on('disconnect', ()=> {
+  socket.disconnect();
+})
 
 init();
-// -------------------------------------------------------------
-
 
 // -------------------------------------------------------------
 function init() {
   generateGreeting();
   generateCountriesDropdown();
   generateCitiesDropdown();
-  sendBtn.addEventListener('click', () => {
-    sendMessage();
-  })
+
+  sendBtn.addEventListener('click', (e) => {
+    sendMessage(e);
+  });
 }
 
 // -------------------------------------------------------------
 function generateGreeting() {
-  let url = new URL(window.location);
-  let palmId = url.searchParams.get('palmId');
-  let greeting = `You are speaking to <b>${ palmId }</b>`;
+  let greeting = `You are chatting with <b>${ palmId }</b>`;
   greetingElem.innerHTML = greeting;
 }
 
@@ -50,8 +55,14 @@ function generateCitiesDropdown() {
 }
 
 // -------------------------------------------------------------
-function sendMessage() {
-  console.log('sendMessage');
-  let country = countryListElem.options[countryListElem.selectedIndex].value
-  console.log('[ handleFormSubmit ] country: ', country);
+function sendMessage(e) {
+  // Prevent refresh
+  e.preventDefault();
+
+  let country = countryListElem.options[countryListElem.selectedIndex].text
+
+  socket.emit('location-data', {
+    palmId : palmId,
+    value  : country
+  });
 }

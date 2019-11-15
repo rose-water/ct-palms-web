@@ -21,13 +21,14 @@ let baseUrl = `${ process.env.ADAFRUIT_USERNAME }/feeds/`;
 // 3. Interaction happens on the device, outputs url for user
 // 4. User on phone navigates to url, will choose city and
 //    country on webpage along with device ID (from url?), sent 
-//    as a POST request 
-// 5. Server handles POST request and gets country and citydata 
-//    from query, pubs to topic (from query also). 
+//    over websockets to node server
+// 5. node server gets country and city data from sockets 
+//    pubs to topic (from query also). 
 
 // I guess the topics list should be an imported file
 // I wonder if there's a way to import a list of topics to 
 // Adafruit? OR IS IT MANUAL :(
+
 let topicsList = [ 'testTopic' ];
 
 const mqttClient = mqtt.connect('mqtts://io.adafruit.com',
@@ -40,18 +41,28 @@ const mqttClient = mqtt.connect('mqtts://io.adafruit.com',
 
 mqttClient.on('connect', () => {
   console.log('MQTT client connected.')
-  mqttClient.subscribe(baseUrl + topicsList[0]);
 });
+
 
 mqttClient.on('error', (error) => {
   console.log('MQTT Client Errored');
   console.log(error);
 });
 
-mqttClient.on('message', (topic, message) => {
-  console.log('msg from topic ' + topic + ': ' + message.toString());
-});
 
+// When we get data from the form frontend
+io.on('connection', client => {
+  console.log('Socket client connected.');
+
+  client.on('location-data', data => {
+    // console.log('location-data: ', data.value)
+    mqttClient.publish(baseUrl + topicsList[0], data.value);
+  });
+
+  client.on('disconnect', () => {
+    console.log('Socket client disconnected.');
+  })
+});
 
 // -------------------------------------------------------------
 // EXPRESS server setup
@@ -62,7 +73,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Palm route - serve a form
 // localhost:3333?palmId=brazil-palm-01
 app.get('/palms/:palmId', (req, res) => {
   
@@ -76,15 +86,12 @@ app.get('/maps/allMarkers', (req, res) => {
  
 });
 
-app.get('/countryData', (req, res) => {
-  
-});
-
 app.get('/citiesData', (req, res) => {
   
 });
 
 
+// -------------------------------------------------------------
 // Listen on PORT
 server.listen(PORT, () => {
   console.log('Listening on PORT: ' + PORT);
