@@ -12,6 +12,63 @@ socket.on('disconnect', ()=> {
   socket.disconnect();
 })
 
+let sampleLocations = [
+  {
+    "country": "United States",
+    "cities": [
+      "Los Angeles",
+      "New York City",
+      "Detroit",
+      "Chicago",
+      "Seattle"
+    ]
+  },
+
+  {
+    "country": "Japan",
+    "cities": [
+      "Tokyo",
+      "Kyoto",
+      "Osaka",
+      "Nagoya",
+      "Yokohama"
+    ]
+  },
+
+  {
+    "country": "India",
+    "cities": [
+      "Mumbai",
+      "Bangalore",
+      "Chennai",
+      "Hyderabad",
+      "New Delhi"
+    ]
+  },
+
+  {
+    "country": "Philippines",
+    "cities": [
+      "Manila",
+      "Quezon City",
+      "Cebu",
+      "Davao",
+      "Caloocan"
+    ]
+  },
+
+  {
+    "country": "Germany",
+    "cities": [
+      "Berlin",
+      "Frankfurt",
+      "Munich",
+      "Stuttgart",
+      "Cologne"
+    ]
+  }
+];
+
 init();
 
 // -------------------------------------------------------------
@@ -33,8 +90,12 @@ function generateGreeting() {
 
 // -------------------------------------------------------------
 function generateCountriesDropdown() {
-  let dropdownMarkup = countries.map(country => {
-    return `<option value=${ country['code'] }>${ country['name'] }</option>`
+  // let dropdownMarkup = countries.map(country => {
+  //   return `<option value=${ country['code'] }>${ country['name'] }</option>`
+  // }).join('');
+
+  let dropdownMarkup = sampleLocations.map(countryObj => {
+    return `<option value=${ countryObj['country'] }>${ countryObj['country'] }</option>`
   }).join('');
   countryListElem.innerHTML = dropdownMarkup;
 }

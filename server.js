@@ -29,7 +29,7 @@ let baseUrl = `${ process.env.ADAFRUIT_USERNAME }/feeds/`;
 // I wonder if there's a way to import a list of topics to 
 // Adafruit? OR IS IT MANUAL :(
 
-let topicsList = [ 'testTopic' ];
+let topicsList = [ 'brazil-palm-01' ];
 
 const mqttClient = mqtt.connect('mqtts://io.adafruit.com',
   {
@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 
 // Should serve the form
 // localhost:3333?palmId=brazil-palm-01
-app.get('/palms/:palmId', (req, res) => {
+app.get('/:palmId', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
@@ -92,7 +92,6 @@ app.get('/maps/allMarkers', (req, res) => {
 app.get('/citiesData', (req, res) => {
   
 });
-
 
 // -------------------------------------------------------------
 // Listen on PORT
