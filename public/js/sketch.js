@@ -2,6 +2,7 @@ import { countries } from './countries.js'
 
 let greetingElem    = document.getElementById('greeting-msg');
 let countryListElem = document.getElementById('country-list');
+let cityListElem    = document.getElementById('city-list');
 let sendBtn         = document.getElementById('send-btn');
 
 let url    = new URL(window.location);
@@ -16,55 +17,137 @@ let sampleLocations = [
   {
     "country": "United States",
     "cities": [
-      "Los Angeles",
-      "New York City",
-      "Detroit",
-      "Chicago",
-      "Seattle"
+      {
+        "city": "Los Angeles",
+        "coords": {
+          "lat" : 34.0522,
+          "lon" : 118.2437
+        }
+      },
+
+      {
+        "city": "New York City",
+        "coords": {
+          "lat" : 40.7128,
+          "lon" : 74.0060
+        }
+      },
+
+      {
+        "city": "Chicago",
+        "coords": {
+          "lat" : 41.8781,
+          "lon" : 87.6298
+        }
+      }
     ]
   },
 
   {
     "country": "Japan",
     "cities": [
-      "Tokyo",
-      "Kyoto",
-      "Osaka",
-      "Nagoya",
-      "Yokohama"
+      {
+        "city": "Tokyo",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Kyoto",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Osaka",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      }
     ]
   },
 
   {
     "country": "India",
     "cities": [
-      "Mumbai",
-      "Bangalore",
-      "Chennai",
-      "Hyderabad",
-      "New Delhi"
+      {
+        "city": "Mumbai",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Bangalore",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Chennai",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      }
     ]
   },
 
   {
     "country": "Philippines",
     "cities": [
-      "Manila",
-      "Quezon City",
-      "Cebu",
-      "Davao",
-      "Caloocan"
+      {
+        "city": "Manila",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Quezon City",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Cebu",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      }
     ]
   },
 
   {
     "country": "Germany",
     "cities": [
-      "Berlin",
-      "Frankfurt",
-      "Munich",
-      "Stuttgart",
-      "Cologne"
+      {
+        "city": "Berlin",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Frankfurt",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      },
+      {
+        "city": "Munich",
+        "coords": {
+          "lat" : 0.0,
+          "lon" : 0.0
+        }
+      }
     ]
   }
 ];
@@ -75,11 +158,17 @@ init();
 function init() {
   generateGreeting();
   generateCountriesDropdown();
-  generateCitiesDropdown();
+  // generateCitiesDropdown();
 
   sendBtn.addEventListener('click', (e) => {
     sendMessage(e);
   });
+
+  countryListElem.addEventListener('change', (e) => {
+    console.log(`e.target.value = ${ e.target.value }`);
+    handleUpdateCitiesDropdown(e.target.value);
+  });
+
 }
 
 // -------------------------------------------------------------
@@ -87,6 +176,7 @@ function generateGreeting() {
   let greeting = `You are chatting with <b>${ palmId }</b>`;
   greetingElem.innerHTML = greeting;
 }
+
 
 // -------------------------------------------------------------
 function generateCountriesDropdown() {
@@ -100,20 +190,24 @@ function generateCountriesDropdown() {
   countryListElem.innerHTML = dropdownMarkup;
 }
 
-// -------------------------------------------------------------
-// TODO: Handle country dropdown changes, so that you can make a 
-// call to get list of cities
-
 
 // -------------------------------------------------------------
-function getCities() {
-  // TODO
+function handleUpdateCitiesDropdown(countryName) {
+  console.log('[handleUpdateCitiesDropdown] countryName: ', countryName);
+
+  let chosenCountry = sampleLocations.filter(countryObj => {
+    return countryObj["country"] == countryName;
+  })[0];
+
+  console.log('CHOSEN COUNTRY: ', chosenCountry);
+
+  let dropdownMarkup = chosenCountry['cities'].map(cityObj => {
+    return `<option value=${ cityObj['city'] }>${ cityObj['city'] }</option>`
+  }).join('');
+  
+  cityListElem.innerHTML = dropdownMarkup;
 }
 
-// -------------------------------------------------------------
-function generateCitiesDropdown() {
-
-}
 
 // -------------------------------------------------------------
 function sendMessage(e) {
