@@ -73,60 +73,6 @@ let sampleLocations = [
   },
 
   {
-    "country": "India",
-    "cities": [
-      {
-        "city": "Mumbai",
-        "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
-        }
-      },
-      {
-        "city": "Bangalore",
-        "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
-        }
-      },
-      {
-        "city": "Chennai",
-        "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
-        }
-      }
-    ]
-  },
-
-  {
-    "country": "Philippines",
-    "cities": [
-      {
-        "city": "Manila",
-        "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
-        }
-      },
-      {
-        "city": "Quezon City",
-        "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
-        }
-      },
-      {
-        "city": "Cebu",
-        "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
-        }
-      }
-    ]
-  },
-
-  {
     "country": "Germany",
     "cities": [
       {
@@ -240,7 +186,8 @@ function sendMessage(e) {
   socket.emit('marker-data', selectedLocation); 
 
   socket.emit('location-data', {
-    palmId : palmId,
-    country  : countryName
+    palmId  : palmId,
+    country : countryName,
+    city    : cityName
   });
 }

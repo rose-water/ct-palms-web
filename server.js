@@ -16,24 +16,6 @@ let markerLocations = [];
 // MQTT client setup
 let baseUrl = `${ process.env.ADAFRUIT_USERNAME }/feeds/`;
 
-// Eventually subscribe to a list of topics, each corresponding
-// to specific devices + MAC addresses?
-
-// Is this the right order?
-// 1. esp32 device boots up, connects to wifi.
-// 2. esp32 device subs to designated topic, as well as another 
-//    generic topic to notify node that a device is available.
-// 3. Interaction happens on the device, outputs url for user
-// 4. User on phone navigates to url, will choose city and
-//    country on webpage along with device ID (from url?), sent 
-//    over websockets to node server
-// 5. node server gets country and city data from sockets 
-//    pubs to topic (from query also). 
-
-// I guess the topics list should be an imported file
-// I wonder if there's a way to import a list of topics to 
-// Adafruit? OR IS IT MANUAL :(
-
 let topicsList = [ 'brazil-palm-01' ];
 
 const mqttClient = mqtt.connect('mqtts://io.adafruit.com',
