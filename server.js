@@ -57,33 +57,31 @@ io.on('connection', client => {
 });
 
 // -------------------------------------------------------------
-// EXPRESS server setup
+// Express server setup
 app.use(express.static('public'));
-// app.use(express.static('public', { index: false } ));
+
 
 // Root route - redirect to map
 app.get('/', (req, res) => {
   // TODO currently not working for some reason
-  res.redirect('/maps/livemap');
 });
 
 // Should serve the form
 // localhost:3333?palmId=brazil-palm-01
-app.get('/:palmId', (req, res) => {
+app.get(':palmId', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/maps/livemap', (req, res) => {
+
+app.get('/livemap', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'livemap.html'));
 });
 
+
 app.get('/maps/allMarkers', (req, res) => {
- 
+  res.send(markerLocations);
 });
 
-app.get('/citiesData', (req, res) => {
-  
-});
 
 // -------------------------------------------------------------
 // Listen on PORT
