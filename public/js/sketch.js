@@ -9,6 +9,8 @@ let url    = new URL(window.location);
 let socket = io.connect();
 let palmId = url.searchParams.get('palmId');
 
+let selectedCountry;
+
 socket.on('disconnect', ()=> {
   socket.disconnect();
 })
@@ -158,7 +160,10 @@ init();
 function init() {
   generateGreeting();
   generateCountriesDropdown();
-  // generateCitiesDropdown();
+
+  // Yeah, not the right way to initialize the selected 
+  // country with corresponding city, but it's fine for this
+  handleUpdateCitiesDropdown("United States");
 
   sendBtn.addEventListener('click', (e) => {
     sendMessage(e);
@@ -173,7 +178,7 @@ function init() {
 
 // -------------------------------------------------------------
 function generateGreeting() {
-  let greeting = `You are chatting with <b>${ palmId }</b>`;
+  let greeting = `You are chatting with <br/><b>${ palmId }</b>`;
   greetingElem.innerHTML = greeting;
 }
 
@@ -195,16 +200,16 @@ function generateCountriesDropdown() {
 function handleUpdateCitiesDropdown(countryName) {
   console.log('[handleUpdateCitiesDropdown] countryName: ', countryName);
 
-  let chosenCountry = sampleLocations.filter(countryObj => {
+  selectedCountry = sampleLocations.filter(countryObj => {
     return countryObj["country"] == countryName;
   })[0];
 
-  console.log('CHOSEN COUNTRY: ', chosenCountry);
+  console.log('SELECTED COUNTRY: ', selectedCountry);
 
-  let dropdownMarkup = chosenCountry['cities'].map(cityObj => {
+  let dropdownMarkup = selectedCountry['cities'].map(cityObj => {
     return `<option value=${ cityObj['city'] }>${ cityObj['city'] }</option>`
   }).join('');
-  
+
   cityListElem.innerHTML = dropdownMarkup;
 }
 
@@ -214,10 +219,22 @@ function sendMessage(e) {
   // Prevent refresh
   e.preventDefault();
 
-  let country = countryListElem.options[countryListElem.selectedIndex].text
+  let countryName = countryListElem.options[countryListElem.selectedIndex].text;
+  let cityName = cityListElem.options[cityListElem.selectedIndex].text;
+
+  // Prob better handled by setting some state but it's fine
+  // Get city object data
+  let selectedCityObj = selectedCountry['cities'].filter(cityObj => {
+    return cityObj["city"] == cityName
+  })[0];
+
+  let selectedLocation = {
+    "country" : countryName,
+    "city": selectedCityObj
+  }
 
   socket.emit('location-data', {
     palmId : palmId,
-    value  : country
+    country  : countryName
   });
 }

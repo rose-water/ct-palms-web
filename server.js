@@ -7,6 +7,11 @@ const server  = require('http').createServer(app);
 const io      = require('socket.io')(server);
 require('dotenv').config();
 
+// In the real world this would be stored in a database,
+// and clients would be checking for updates periodically
+// but out of scope for this, just storing in memory
+let userLocations = [];
+
 // -------------------------------------------------------------
 // MQTT client setup
 let baseUrl = `${ process.env.ADAFRUIT_USERNAME }/feeds/`;
@@ -56,7 +61,7 @@ io.on('connection', client => {
 
   client.on('location-data', data => {
     // console.log('location-data: ', data.value)
-    mqttClient.publish(baseUrl + topicsList[0], data.value);
+    mqttClient.publish(baseUrl + topicsList[0], data.country);
   });
 
   client.on('disconnect', () => {
