@@ -230,8 +230,12 @@ function sendMessage(e) {
 
   let selectedLocation = {
     "country" : countryName,
-    "city": selectedCityObj
-  }
+    "city"    : selectedCityObj["city"],
+    "lat"     : selectedCityObj["coords"]["lat"],
+    "lon"     : selectedCityObj["coords"]["lon"]
+  };
+
+  socket.emit('marker-data', selectedLocation); 
 
   socket.emit('location-data', {
     palmId : palmId,
