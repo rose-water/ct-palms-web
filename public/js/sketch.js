@@ -235,6 +235,8 @@ function sendMessage(e) {
     "lon"     : selectedCityObj["coords"]["lon"]
   };
 
+  // This probably doesn't need sockets? Since they're only
+  // going to submit this once, but it's fine
   socket.emit('marker-data', selectedLocation); 
 
   socket.emit('location-data', {

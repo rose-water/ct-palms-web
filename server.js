@@ -10,7 +10,7 @@ require('dotenv').config();
 // In the real world this would be stored in a database,
 // and clients would be checking for updates periodically
 // but out of scope for this, just storing in memory
-let userLocations = [];
+let markerLocations = [];
 
 // -------------------------------------------------------------
 // MQTT client setup
@@ -62,6 +62,11 @@ io.on('connection', client => {
   client.on('location-data', data => {
     // console.log('location-data: ', data.value)
     mqttClient.publish(baseUrl + topicsList[0], data.country);
+  });
+
+  client.on('marker-data', data => {
+    markerLocations.push(data);
+    console.log('marker locations updated: ', markerLocations);
   });
 
   client.on('disconnect', () => {
