@@ -1,14 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:300,400&display=swap');
 
+svg {
+  /* border: 1px solid blue; */
+}
+
 #title-container {
   margin-top: 48px;
   margin-bottom: 48px;
+  font-size: 36px;
 }
 
 #about {
-  font-size: 14px;
+  font-size: 28px;
   color: white;
   margin-top: 80px;
+  margin-bottom: 80px;
   width: 80%;
   font-weight: 100;
 }

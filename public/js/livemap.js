@@ -85,7 +85,7 @@ function drawMarkers() {
       gdistance = d3.geoDistance(coordinate, projection.invert(center));
       return gdistance > 1.57 ? 'none' : 'steelblue';
     })
-    .attr('r', 7);
+    .attr('r', 20);
 
   markerGroup.each(function () {
     this.parentNode.appendChild(this);
