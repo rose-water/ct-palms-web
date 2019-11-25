@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:300,400&display=swap');
 
-svg {
-  /* border: 1px solid blue; */
+h1, h2 {
+  text-align: center;
 }
 
 #title-container {

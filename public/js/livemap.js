@@ -6,7 +6,7 @@
 
 // -------------------------------------------------------------
 const width = 960;
-const height = 500;
+const height = 700;
 
 const config = {
   speed: 0.005,
@@ -17,7 +17,7 @@ const config = {
 let locations      = [];
 const svg          = d3.select('svg').attr('width', width).attr('height', height);
 const markerGroup  = svg.append('g');
-const projection   = d3.geoOrthographic();
+const projection   = d3.geoOrthographic().scale(350).translate([ width/2, height/2 ]);
 const initialScale = projection.scale();
 const path         = d3.geoPath().projection(projection);
 const center       = [ width/2, height/2 ];
@@ -42,6 +42,7 @@ function drawGlobe() {
         .style("fill", (d, i) => '#7FFFD4')
         .style("opacity", "1");
         locations = locationData;
+        console.log('locations: ', locations);
         drawMarkers();                   
       });
 }
@@ -85,7 +86,7 @@ function drawMarkers() {
       gdistance = d3.geoDistance(coordinate, projection.invert(center));
       return gdistance > 1.57 ? 'none' : 'steelblue';
     })
-    .attr('r', 20);
+    .attr('r', 10);
 
   markerGroup.each(function () {
     this.parentNode.appendChild(this);
