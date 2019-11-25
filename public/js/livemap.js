@@ -1,66 +1,92 @@
-let width = 1200;
-let height = 900;
-let projection;
-let svg;
-let path;
-let g;
-
-initMap();
+/*
+* I did not write this code. I only changed some of the styling/colors.
+* Original map code by Atanu Mallick:
+* https://bl.ocks.org/atanumallick/8d18989cd538c72ae1ead1c3b18d7b54
+*/
 
 // -------------------------------------------------------------
-// load and display the World
-function initMap(markerData) {
-  projection = d3.geo.mercator()
-    .center([0 , 5])
-    .scale(200)
-    .rotate([-180, 0]);
+const width = 960;
+const height = 500;
 
-  svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+const config = {
+  speed: 0.005,
+  verticalTilt: -10,
+  horizontalTilt: 0
+}
 
-  path = d3.geo.path().projection(projection);
+let locations      = [];
+const svg          = d3.select('svg').attr('width', width).attr('height', height);
+const markerGroup  = svg.append('g');
+const projection   = d3.geoOrthographic();
+const initialScale = projection.scale();
+const path         = d3.geoPath().projection(projection);
+const center       = [ width/2, height/2 ];
 
-  g = svg.append("g");
+drawGlobe();    
+drawGraticule();
+enableRotation();
 
-  d3.json("js/world-110m2.json", (err, topology) => {
+// -------------------------------------------------------------
+function drawGlobe() { 
+  d3.queue()
+    .defer(d3.json, 'js/world-110m.json')          
+    .defer(d3.json, '/getMarkerData')
+    .await((error, worldData, locationData) => {
+      svg.selectAll(".segment")
+        .data(topojson.feature(worldData, worldData.objects.countries).features)
+        .enter().append("path")
+        .attr("class", "segment")
+        .attr("d", path)
+        .style("stroke", "#000")
+        .style("stroke-width", "0.5px")
+        .style("fill", (d, i) => '#7FFFD4')
+        .style("opacity", "1");
+        locations = locationData;
+        drawMarkers();                   
+      });
+}
 
-    // load and display the cities
-    d3.json('/getMarkerData', (error, data) => {
-      console.log('data: ', data);
-      g.selectAll("circle")
-        .data(data)
-        .enter()
-        .append("a")
-        .attr("xlink:href", (d) => {
-          return "https://www.google.com/search?q="+d.city;
-        })
-        .append("circle")
-        .attr("cx", (d) => {
-          return projection([d.lon, d.lat])[0];
-        })
-        .attr("cy", (d) => {
-          return projection([d.lon, d.lat])[1];
-        })
-        .attr("r", 5)
-        .style("fill", "red");
-    });
-      
-    g.selectAll("path")
-      .data(topojson.object(topology, topology.objects.countries).geometries)
-      .enter()
-      .append("path")
-      .attr("d", path);
-  
+
+// -------------------------------------------------------------
+function drawGraticule() {
+  const graticule = d3.geoGraticule().step([5, 5]);
+
+  svg.append("path")
+    .datum(graticule)
+    .attr("class", "graticule")
+    .attr("d", path)
+    .style("stroke-width", "0.5px")
+    .style("stroke", "#1F1E1E");
+}
+
+
+// -------------------------------------------------------------
+function enableRotation() {
+  d3.timer(function (elapsed) {
+    projection.rotate([config.speed * elapsed - 120, config.verticalTilt, config.horizontalTilt]);
+    svg.selectAll("path").attr("d", path);
+    drawMarkers();
   });
+}
 
-  // zoom and pan
-  var zoom = d3.behavior.zoom()
-  .on("zoom", () => {
-    g.attr("transform","translate(" + d3.event.translate.join(",")+")scale("+d3.event.scale+")");
-    g.selectAll("circle").attr("d", path.projection(projection));
-    g.selectAll("path").attr("d", path.projection(projection)); 
+
+// -------------------------------------------------------------
+function drawMarkers() {
+  const markers = markerGroup.selectAll('circle').data(locations);
+
+  markers.enter()
+    .append('circle')
+    .merge(markers)
+    .attr('cx', d => projection([d.lon, d.lat])[0])
+    .attr('cy', d => projection([d.lon, d.lat])[1])
+    .attr('fill', d => {
+      const coordinate = [d.lon, d.lat];
+      gdistance = d3.geoDistance(coordinate, projection.invert(center));
+      return gdistance > 1.57 ? 'none' : 'steelblue';
+    })
+    .attr('r', 7);
+
+  markerGroup.each(function () {
+    this.parentNode.appendChild(this);
   });
-
-  svg.call(zoom)
 }
