@@ -1,4 +1,4 @@
-import { countries } from './countries.js'
+// import { countries } from './countries.js'
 
 let greetingElem    = document.getElementById('greeting-msg');
 let countryListElem = document.getElementById('country-list');
@@ -22,24 +22,24 @@ let sampleLocations = [
       {
         "city": "Los Angeles",
         "coords": {
-          "lat" : 34.0522,
-          "lon" : 118.2437
+          "lat" : 34.052235,
+          "lon" : -118.243683
         }
       },
 
       {
         "city": "New York City",
         "coords": {
-          "lat" : 40.7128,
-          "lon" : 74.0060
+          "lat" : 40.730610,
+          "lon" : -73.935242
         }
       },
 
       {
         "city": "Chicago",
         "coords": {
-          "lat" : 41.8781,
-          "lon" : 87.6298
+          "lat" : 41.881832,
+          "lon" : -87.623177
         }
       }
     ]
@@ -51,22 +51,22 @@ let sampleLocations = [
       {
         "city": "Tokyo",
         "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
+          "lat" : 35.6804,
+          "lon" : 139.7690
         }
       },
       {
         "city": "Kyoto",
         "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
+          "lat" : 35.0116,
+          "lon" : 135.7681
         }
       },
       {
         "city": "Osaka",
         "coords": {
-          "lat" : 0.0,
-          "lon" : 0.0
+          "lat" : 34.6937,
+          "lon" : 135.5023
         }
       }
     ]
@@ -116,7 +116,6 @@ function init() {
   });
 
   countryListElem.addEventListener('change', (e) => {
-    console.log(`e.target.value = ${ e.target.value }`);
     handleUpdateCitiesDropdown(e.target.value);
   });
 

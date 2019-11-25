@@ -78,8 +78,8 @@ app.get('/livemap', (req, res) => {
 });
 
 
-app.get('/maps/allMarkers', (req, res) => {
-  res.send(markerLocations);
+app.get('/getMarkerData', (req, res) => {
+  res.json(markerLocations);
 });
 
 
