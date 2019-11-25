@@ -37,7 +37,7 @@ function drawGlobe() {
         .enter().append("path")
         .attr("class", "segment")
         .attr("d", path)
-        .style("stroke", "#000")
+        .style("stroke", "#151515")
         .style("stroke-width", "0.5px")
         .style("fill", (d, i) => '#7FFFD4')
         .style("opacity", "1");
@@ -56,7 +56,8 @@ function drawGraticule() {
     .attr("class", "graticule")
     .attr("d", path)
     .style("stroke-width", "0.5px")
-    .style("stroke", "#1F1E1E");
+    .style("fill", "#151515")
+    .style("stroke", "#3b3a3a");
 }
 
 
