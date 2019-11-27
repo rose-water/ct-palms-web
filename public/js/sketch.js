@@ -135,7 +135,7 @@ function generateCountriesDropdown() {
   // }).join('');
 
   let dropdownMarkup = sampleLocations.map(countryObj => {
-    return `<option value=${ countryObj['country'] }>${ countryObj['country'] }</option>`
+    return `<option value="${ countryObj['country'] }">${ countryObj['country'] }</option>`
   }).join('');
   countryListElem.innerHTML = dropdownMarkup;
 }
@@ -143,8 +143,8 @@ function generateCountriesDropdown() {
 
 // -------------------------------------------------------------
 function handleUpdateCitiesDropdown(countryName) {
-  console.log('[handleUpdateCitiesDropdown] countryName: ', countryName);
-
+  // TODO BUG FIX for United States (countries with spaces in the name)
+  console.log('countryName: ', countryName);
   selectedCountry = sampleLocations.filter(countryObj => {
     return countryObj["country"] == countryName;
   })[0];
