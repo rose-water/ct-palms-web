@@ -7,17 +7,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
   </head>
   <body>
+    
     <div id="container">
-      <h1>🌴</h1>
-      <span id="greeting-msg"></span>
-      <div id="form-container">
-        <form id="location-form">
-          <select class="dropdown" id="country-list"></select>
-          <select class="dropdown" id="city-list"></select>
-          <button id="send-btn">SEND</button>
-        </form>
+      <div id="greeting-container" class="child-container">
+        <span id="greeting-msg"></span>
       </div>
+
+      <div id="middle-container">
+        <div id="message-container" class="child-container">
+          <p id="palm-msg">testing testing here is a message that will show up to a person!!!!</p>
+        </div>
+    
+        <div id="form-container" class="child-container">
+          <form id="name-form" class="custom-form">
+            <input type="text" name="firstname" value="Name">
+          </form>
+          <form id="location-form" class="custom-form">
+            <select class="dropdown" id="country-list"></select>
+            <select class="dropdown" id="city-list"></select>
+          </form>
+        </div>
+      </div>
+      
+      <button id="send-btn">SEND MESSAGE</button>
     </div>
+
     <script src="js/sketch.js" type="module"></script>
   </body>
 </html>

@@ -1,9 +1,12 @@
 // import { countries } from './countries.js'
 
+let msgContainerElem = document.getElementById('palm-msg');
+
 let greetingElem    = document.getElementById('greeting-msg');
 let countryListElem = document.getElementById('country-list');
 let cityListElem    = document.getElementById('city-list');
 let sendBtn         = document.getElementById('send-btn');
+
 
 let url    = new URL(window.location);
 let socket = io.connect();
@@ -123,13 +126,15 @@ function init() {
 
 // -------------------------------------------------------------
 function generateGreeting() {
-  let greeting = `You are chatting with <br/><b>${ palmId }</b>`;
+  let greeting = `You are chatting with <b>${ palmId }</b> 🌴😎`;
   greetingElem.innerHTML = greeting;
 }
 
 
 // -------------------------------------------------------------
 function generateCountriesDropdown() {
+  // If we wanted more countries available, however we don't
+  // have corresponding cities for the other countries:
   // let dropdownMarkup = countries.map(country => {
   //   return `<option value=${ country['code'] }>${ country['name'] }</option>`
   // }).join('');
@@ -143,13 +148,9 @@ function generateCountriesDropdown() {
 
 // -------------------------------------------------------------
 function handleUpdateCitiesDropdown(countryName) {
-  // TODO BUG FIX for United States (countries with spaces in the name)
-  console.log('countryName: ', countryName);
   selectedCountry = sampleLocations.filter(countryObj => {
     return countryObj["country"] == countryName;
   })[0];
-
-  console.log('SELECTED COUNTRY: ', selectedCountry);
 
   let dropdownMarkup = selectedCountry['cities'].map(cityObj => {
     return `<option value=${ cityObj['city'] }>${ cityObj['city'] }</option>`
@@ -167,7 +168,8 @@ function sendMessage(e) {
   let countryName = countryListElem.options[countryListElem.selectedIndex].text;
   let cityName = cityListElem.options[cityListElem.selectedIndex].text;
 
-  // Prob better handled by setting some state but it's fine
+  // Prob better handled by setting some app state but it's fine
+
   // Get city object data
   let selectedCityObj = selectedCountry['cities'].filter(cityObj => {
     return cityObj["city"] == cityName
@@ -180,8 +182,6 @@ function sendMessage(e) {
     "lon"     : selectedCityObj["coords"]["lon"]
   };
 
-  // This probably doesn't need sockets? Since they're only
-  // going to submit this once, but it's fine
   socket.emit('marker-data', selectedLocation); 
 
   socket.emit('location-data', {
