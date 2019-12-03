@@ -1,5 +1,6 @@
 // import { countries } from './countries.js'
 let messageContainerElem = document.getElementById('message-container');
+let formContainerElem    = document.getElementById('form-container');
 let nameFormElem         = document.getElementById('name-form');
 let locationFormElem     = document.getElementById('location-form');
 let greetingElem         = document.getElementById('greeting-msg');
@@ -16,13 +17,6 @@ let selectedCountry;
 socket.on('disconnect', ()=> {
   socket.disconnect();
 })
-
-// TODO
-let palmTreeMsgs = [
-  {
-    "test" : "Hello! I'm a "
-  }
-]
 
 let sampleLocations = [
   {
@@ -115,6 +109,7 @@ init();
 function init() {
   generateGreeting();
   generateLocationForm();
+
   initConversation();
 
   sendBtn.addEventListener('click', (e) => {
@@ -124,6 +119,9 @@ function init() {
   countryListElem.addEventListener('change', (e) => {
     handleUpdateCitiesDropdown(e.target.value);
   });
+
+  formContainerElem.style.display = 'none';
+  sendBtn.style.display = 'none';
 }
 
 // -------------------------------------------------------------
@@ -174,17 +172,33 @@ function handleUpdateCitiesDropdown(countryName) {
 
 
 // -------------------------------------------------------------
-function initConversation() {
+function generateTextFromPalm(msg) {
   let palmMsgMarkup = `
     <div class="palm-msg-container">
       <div class="palm-icon">🌴</div>
       <div class="palm-msg-text-container">
-        <p class="palm-msg-text">Hello! I am a palm tree living in Los Angeles, but I'm originally from Brazil.</p>
+        <p class="palm-msg-text">${ msg }</p>
       </div>
     </div>
   `;
 
-  messageContainerElem.innerHTML = palmMsgMarkup;
+  return palmMsgMarkup;
+}
+
+
+// -------------------------------------------------------------
+function initConversation() {
+
+  let greetings = [
+    "Hello! I am a palm tree living in Los Angeles, but I'm originally from Brazil.",
+    "Let me introduce you to my friends!",
+  ];
+
+  messageContainerElem.innerHTML = generateTextFromPalm(greetings[0]);
+
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[1]);
+  }, 2000);
 }
 
 
