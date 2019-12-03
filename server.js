@@ -58,18 +58,20 @@ io.on('connection', client => {
 
 // -------------------------------------------------------------
 // Express server setup
-app.use(express.static('public'));
-
 
 // Root route - redirect to map
 app.get('/', (req, res) => {
-  // TODO currently not working for some reason
+  console.log('Redirecting to livemap...');
+  res.redirect('/livemap');
 });
 
+
+app.use(express.static('public'));
+
 // Should serve the form
-// localhost:3333?palmId=brazil-palm-01
-app.get(':palmId', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// localhost:3333/chat?palmId=brazil-palm-01
+app.get('/chat', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chat.html'));
 });
 
 
