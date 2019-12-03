@@ -1,12 +1,11 @@
 // import { countries } from './countries.js'
-
-let msgContainerElem = document.getElementById('palm-msg');
-
-let greetingElem    = document.getElementById('greeting-msg');
-let countryListElem = document.getElementById('country-list');
-let cityListElem    = document.getElementById('city-list');
-let sendBtn         = document.getElementById('send-btn');
-
+let messageContainerElem = document.getElementById('message-container');
+let nameFormElem         = document.getElementById('name-form');
+let locationFormElem     = document.getElementById('location-form');
+let greetingElem         = document.getElementById('greeting-msg');
+let countryListElem      = document.getElementById('country-list');
+let cityListElem         = document.getElementById('city-list');
+let sendBtn              = document.getElementById('send-btn');
 
 let url    = new URL(window.location);
 let socket = io.connect();
@@ -17,6 +16,13 @@ let selectedCountry;
 socket.on('disconnect', ()=> {
   socket.disconnect();
 })
+
+// TODO
+let palmTreeMsgs = [
+  {
+    "test" : "Hello! I'm a "
+  }
+]
 
 let sampleLocations = [
   {
@@ -108,11 +114,8 @@ init();
 // -------------------------------------------------------------
 function init() {
   generateGreeting();
-  generateCountriesDropdown();
-
-  // Yeah, not the right way to initialize the selected 
-  // country with corresponding city, but it's fine for this
-  handleUpdateCitiesDropdown("United States");
+  generateLocationForm();
+  initConversation();
 
   sendBtn.addEventListener('click', (e) => {
     sendMessage(e);
@@ -121,7 +124,6 @@ function init() {
   countryListElem.addEventListener('change', (e) => {
     handleUpdateCitiesDropdown(e.target.value);
   });
-
 }
 
 // -------------------------------------------------------------
@@ -130,6 +132,17 @@ function generateGreeting() {
   greetingElem.innerHTML = greeting;
 }
 
+// -------------------------------------------------------------
+function generateLocationForm() {
+  generateCountriesDropdown();
+
+  // Yeah, not the right way to initialize the selected 
+  // country with corresponding city, but it's fine for this
+  handleUpdateCitiesDropdown("United States");
+
+  // Hide the location form at first
+  locationFormElem.style.display = 'none';
+}
 
 // -------------------------------------------------------------
 function generateCountriesDropdown() {
@@ -157,6 +170,21 @@ function handleUpdateCitiesDropdown(countryName) {
   }).join('');
 
   cityListElem.innerHTML = dropdownMarkup;
+}
+
+
+// -------------------------------------------------------------
+function initConversation() {
+  let palmMsgMarkup = `
+    <div class="palm-msg-container">
+      <div class="palm-icon">🌴</div>
+      <div class="palm-msg-text-container">
+        <p class="palm-msg-text">Hello! I am a palm tree living in Los Angeles, but I'm originally from Brazil.</p>
+      </div>
+    </div>
+  `;
+
+  messageContainerElem.innerHTML = palmMsgMarkup;
 }
 
 

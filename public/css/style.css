@@ -27,7 +27,7 @@ h1 {
 
 #greeting-container {
   display: flex;
-  background: #dabafa;
+  background: #5ce4ff;
 	width: 100%;
 	text-align: center;
   height: 72px;
@@ -59,25 +59,59 @@ h1 {
 
 /* 72px + 128px to account for header and send button */
 #middle-container {
-  display: flex;
-  flex-direction: column;
   height: calc(100% - 200px);
   width: 100%;
   position: absolute;
   top: 72px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 72px;
 }
 
-#palm-msg {
+#message-container {
+  height: 60%;
+}
+
+
+.palm-msg-container {
+  font-size: 36px;
+	line-height: 60px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: space-between;
+}
+
+.palm-icon {
+  font-size: 60px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  /* background: #dfdfff; */
+  display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.palm-msg-text-container {
+  background: #dfdfff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 88%;
+}
+
+.palm-msg-text {
   margin: 0px;
-  font-size: 42px;
-  line-height: 60px;
+}
+
+#form-container {
+  background: #d9ffed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 40%;
 }
 
 .child-container {
   width: 100%;
+  padding: 48px;
 }
 
 input[type=text] {
