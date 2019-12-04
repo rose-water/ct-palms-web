@@ -11,7 +11,7 @@ html, body {
 
 body {
   font-family: 'Nunito', sans-serif;
-  background: honeydew;
+  background: #151515;
 }
 
 h1 {
@@ -71,38 +71,73 @@ p.form-header {
   height: 70%;
 }
 
-.palm-msg-container {
+
+.palm-msg-container,
+.user-msg-container {
   font-size: 32px;
 	line-height: 60px;
 	display: flex;
 	flex-direction: row;
-	align-items: flex-end;
-  justify-content: space-between;
   margin-bottom: 28px;
   /* animation: fadeIn 0.5s linear;  */
 }
 
-.palm-icon {
+.palm-msg-container {
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.user-msg-container {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.palm-icon,
+.user-icon {
   font-size: 60px;
   height: 80px;
   width: 80px;
   border-radius: 50%;
-  /* background: #dfdfff; */
   display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.palm-msg-text-container {
-  background: #dfdfff;
-  border-radius: 12px;
-  padding: 24px;
-  width: 88%;
+.palm-icon {
+  margin-right: 16px;
 }
 
-.palm-msg-text {
+.user-icon {
+  background: #94d0ff;
+  margin-left: 16px;
+}
+
+.user-icon-img {
+  width: 40px;
+  height: 40px;
+}
+
+.palm-msg-text-container,
+.user-msg-text-container {
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 88%;
+}
+
+.palm-msg-text-container {
+  background: #dfdfff;
+}
+
+.user-msg-text-container {
+  background: #94d0ff;
+  text-align: right;
+}
+
+.palm-msg-text,
+.user-msg-text {
   margin: 0px;
 }
+
 
 #form-container {
   background: #d9ffed;

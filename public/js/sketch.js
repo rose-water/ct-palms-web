@@ -42,6 +42,7 @@ let greetings = [
   "It's been nice chatting with you. Feel free to visit some of my friends! See you later! 👋",
 ];
 
+
 let sampleLocations = [
   {
     "country": "United States",
@@ -211,6 +212,22 @@ function generateTextFromPalm(msg) {
 
 
 // -------------------------------------------------------------
+function generateTextFromUser(msg) {
+  let userMsgMarkup = `
+    <div class="user-msg-container">
+      <div class="user-msg-text-container">
+        <p class="user-msg-text">${ msg }</p>
+      </div>
+      <div class="user-icon">
+        <img class="user-icon-img" src="assets/user-icon.png" />
+      </div>
+    </div>
+  `;
+
+  return userMsgMarkup;
+}
+
+// -------------------------------------------------------------
 function initConversation() {
   // Icky way to do this 💩
 
@@ -255,13 +272,18 @@ function handleSendName() {
     nameFormElem.style.display      = 'none';
     messageContainerElem.classList.remove('shortsize');
     messageContainerElem.classList.add('fullsize');
-    messageContainerElem.innerHTML += generateTextFromPalm(greetings[2] + userName + '! ' + greetings[3]);
-
+    messageContainerElem.innerHTML += generateTextFromUser(userName);
+    
     // change styling and remove eventlistener
     sendBtn.classList.remove('enabled');
     sendBtn.classList.add('disabled');
     sendBtn.removeEventListener('click', handleSendName)
   }, 1000);
+
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[2] + userName + '! ' + greetings[3]);
+  }, 3000);
+
 
   handleIntroToFriends();
 }
@@ -340,12 +362,13 @@ function handleSendLocation() {
     messageContainerElem.classList.remove('shortsize');
     messageContainerElem.classList.add('fullsize');
 
+    messageContainerElem.innerHTML += generateTextFromUser(`I'm from ${ cityName }, ${ countryName }.`);
+
     // change styling and remove eventlistener
     sendBtn.classList.remove('enabled');
     sendBtn.classList.add('disabled');
     sendBtn.removeEventListener('click', handleSendLocation)
   }, 1000);
-
 
   setTimeout(() => {
     messageContainerElem.innerHTML += generateTextFromPalm(greetings[7] + countryName + '! ' + greetings[8]);
