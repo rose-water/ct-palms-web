@@ -273,11 +273,13 @@ function handleIntroToFriends() {
   // mexican-palm-06
   setTimeout(() => {
     messageContainerElem.innerHTML += generateTextFromPalm(greetings[4]);
+    // TODO: SOCKET EMIT FOR mexican-palm-06
   }, 5000);
 
   // spanish-palm-03
   setTimeout(() => {
     messageContainerElem.innerHTML += generateTextFromPalm(greetings[5]);
+    // TODO: SOCKET EMIT FOR spanish-palm-03
   }, 12000);
 
   setTimeout(() => {
