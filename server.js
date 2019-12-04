@@ -16,7 +16,11 @@ let markerLocations = [];
 // MQTT client setup
 let baseUrl = `${ process.env.ADAFRUIT_USERNAME }/feeds/`;
 
-let topicsList = [ 'brazil-palm-01' ];
+let topicsList = [ 
+  'brazil-palm-01',
+  'mexican-palm-06',
+  'spanish-palm-03'
+];
 
 const mqttClient = mqtt.connect('mqtts://io.adafruit.com',
   {
@@ -42,14 +46,25 @@ io.on('connection', client => {
   console.log('Socket client connected.');
 
   client.on('location-data', data => {
-    // console.log('location-data: ', data.value)
     mqttClient.publish(baseUrl + topicsList[0], data.country);
   });
+
 
   client.on('marker-data', data => {
     markerLocations.push(data);
     console.log('marker locations updated: ', markerLocations);
   });
+
+
+  client.on('mexican-palm-06', data => {
+    mqttClient.publish(baseUrl + topicsList[1], data.msg);
+  });
+
+
+  client.on('spanish-palm-03', data => {
+    mqttClient.publish(baseUrl + topicsList[2], data.msg);
+  });
+
 
   client.on('disconnect', () => {
     console.log('Socket client disconnected.');
