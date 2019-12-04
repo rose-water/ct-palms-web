@@ -32,12 +32,12 @@ let greetings = [
   `Hello! I'm ${ palmId }, a palm tree living in Los Angeles, but I'm originally from Brazil.`,
   "What's your name?",
   "Nice to meet you, ",
-  "I'd like to introduce you to my friends.",
+  "I'd like to introduce you to some of my friends.",
   "This is mexican-palm-06, a palm tree from Mexico. They've been here for almost 8 years now.",
-  "And this is spanish-palm-03, from Spain. They're new to town!",
+  "And this is spanish-palm-03, from Spain. They're new to town.",
   "What about you? Where are you from?",
   "So cool that you're from ",
-  "I hope one day I can visit! 😎",
+  "I hope one day I can visit 😎",
   "Here's a <a href=\"/livemap\" target=\"_blank\">map</a> of where other people in L.A. are from!",
   "It's been nice chatting with you. Feel free to visit some of my friends! See you later! 👋",
 ];
@@ -141,7 +141,7 @@ function init() {
   // Not a good way to do this
   window.setInterval(function() {
     messageContainerElem.scrollTop = messageContainerElem.scrollHeight;
-  }, 500);
+  }, 100);
 }
 
 // -------------------------------------------------------------
@@ -232,7 +232,7 @@ function handleAskForName() {
   // assign event listener for send button
   sendBtn.addEventListener('click', handleSendName);
 
-  formContainerElem.style.display = 'block';
+  formContainerElem.style.display = 'flex';
   nameFormElem.style.display      = 'block';
   
   messageContainerElem.classList.add('shortsize');
@@ -295,7 +295,7 @@ function handleAskForLocation() {
   // assign event listener for send button
   sendBtn.addEventListener('click', handleSendLocation);
 
-  formContainerElem.style.display = 'block';
+  formContainerElem.style.display = 'flex';
   locationFormElem.style.display  = 'block';
   
   messageContainerElem.classList.add('shortsize');
