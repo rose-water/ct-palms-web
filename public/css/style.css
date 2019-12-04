@@ -45,27 +45,6 @@ h1 {
   opacity: 0;
 }
 
-@keyframes fadeChat {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1.0;
-  }
-}
-
-@keyframes pulsate {
-  0% { 
-      opacity: 0;
-  }
-  50% { 
-      opacity: 1.0;
-  }
-  100% { 
-      opacity: 0;
-  }
-}
-
 /* 72px + 128px to account for header and send button */
 #middle-container {
   height: calc(100% - 200px);
@@ -75,9 +54,16 @@ h1 {
 }
 
 #message-container {
-  height: 60%;
+  overflow: hidden;
 }
 
+#message-container.fullsize {
+  height: 100%;
+}
+
+#message-container.shortsize {
+  height: 60%;
+}
 
 .palm-msg-container {
   font-size: 36px;
@@ -86,7 +72,8 @@ h1 {
 	flex-direction: row;
 	align-items: flex-end;
   justify-content: space-between;
-  animation: fadeChat 0.5s linear; 
+  margin-bottom: 28px;
+  /* animation: fadeIn 0.5s linear;  */
 }
 
 .palm-icon {
@@ -117,6 +104,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   height: 40%;
+  animation: fadeIn 0.5s linear;
 }
 
 .child-container {
@@ -150,6 +138,46 @@ input[type=text] {
   height: 128px;
   font-size: 32px;
   letter-spacing: 2px;
+}
+
+#send-btn.disabled {
+  border: 1px solid #eaeaea;
+  background: #eaeaea;
+  color: #888585;
+}
+
+#send-btn.enabled {
   border: 1px solid aquamarine;
   background: aquamarine;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@keyframes pulsate {
+  0% { 
+      opacity: 0;
+  }
+  50% { 
+      opacity: 1.0;
+  }
+  100% { 
+      opacity: 0;
+  }
+}
+
+@keyframes showForm {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
 }

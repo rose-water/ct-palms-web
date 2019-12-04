@@ -1,3 +1,12 @@
+// -------------------------------------------------------------
+// Written by: Rachel Rose Waterhouse
+// NOTE: These setTimeouts are a little out of hand, definitely
+// not best practice. There are also some things that are probably 
+// better handled by setting some app state but... it's fine. This
+// is more for proof of concept anyway.
+// -------------------------------------------------------------
+
+// In case we want to use a longer list of countries 
 // import { countries } from './countries.js'
 let messageContainerElem = document.getElementById('message-container');
 let formContainerElem    = document.getElementById('form-container');
@@ -7,6 +16,7 @@ let greetingElem         = document.getElementById('greeting-msg');
 let countryListElem      = document.getElementById('country-list');
 let cityListElem         = document.getElementById('city-list');
 let sendBtn              = document.getElementById('send-btn');
+let nameInputElem        = document.getElementById('name-input');
 
 let url    = new URL(window.location);
 let socket = io.connect();
@@ -17,6 +27,20 @@ let selectedCountry;
 socket.on('disconnect', ()=> {
   socket.disconnect();
 })
+
+let greetings = [
+  `Hello! I'm ${ palmId }, a palm tree living in Los Angeles, but I'm originally from Brazil.`,
+  "What's your name?",
+  "Nice to meet you, ",
+  "I'd like to introduce you to my friends.",
+  "This is mexican-palm-06, a palm tree from Mexico. They've been here for almost 8 years now.",
+  "And this is spanish-palm-03, from Spain. They're new to town!",
+  "What about you? Where are you from?",
+  "So cool that you're from ",
+  "I hope one day I can visit! 😎",
+  "Here's a <a href=\"/livemap\" target=\"_blank\">map</a> of where other people in L.A. are from!",
+  "It's been nice chatting with you. Feel free to visit some of my friends! See you later! 👋",
+];
 
 let sampleLocations = [
   {
@@ -109,19 +133,15 @@ init();
 function init() {
   generateGreeting();
   generateLocationForm();
-
   initConversation();
 
-  sendBtn.addEventListener('click', (e) => {
-    sendMessage(e);
-  });
-
-  countryListElem.addEventListener('change', (e) => {
-    handleUpdateCitiesDropdown(e.target.value);
-  });
-
   formContainerElem.style.display = 'none';
-  sendBtn.style.display = 'none';
+  sendBtn.classList.add('disabled');
+
+  // Not a good way to do this
+  window.setInterval(function() {
+    messageContainerElem.scrollTop = messageContainerElem.scrollHeight;
+  }, 500);
 }
 
 // -------------------------------------------------------------
@@ -137,6 +157,10 @@ function generateLocationForm() {
   // Yeah, not the right way to initialize the selected 
   // country with corresponding city, but it's fine for this
   handleUpdateCitiesDropdown("United States");
+
+  countryListElem.addEventListener('change', (e) => {
+    handleUpdateCitiesDropdown(e.target.value);
+  });
 
   // Hide the location form at first
   locationFormElem.style.display = 'none';
@@ -188,29 +212,105 @@ function generateTextFromPalm(msg) {
 
 // -------------------------------------------------------------
 function initConversation() {
-
-  let greetings = [
-    "Hello! I am a palm tree living in Los Angeles, but I'm originally from Brazil.",
-    "Let me introduce you to my friends!",
-  ];
-
-  messageContainerElem.innerHTML = generateTextFromPalm(greetings[0]);
+  // Icky way to do this 💩
 
   setTimeout(() => {
-    messageContainerElem.innerHTML += generateTextFromPalm(greetings[1]);
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[0]);
   }, 2000);
+  
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[1]);
+  }, 4000);
+
+  setTimeout(() => {
+    handleAskForName();
+  }, 5000);
+}
+
+// -------------------------------------------------------------
+function handleAskForName() {
+  // assign event listener for send button
+  sendBtn.addEventListener('click', handleSendName);
+
+  formContainerElem.style.display = 'block';
+  nameFormElem.style.display      = 'block';
+  
+  messageContainerElem.classList.add('shortsize');
+  messageContainerElem.classList.remove('fullsize');
+  
+  sendBtn.classList.remove('disabled');
+  sendBtn.classList.add('enabled');
+}
+
+// -------------------------------------------------------------
+function handleSendName() {
+  let userName = nameInputElem.value;
+
+  socket.emit('name-data', {
+    name: userName
+  });
+
+  setTimeout(() => {
+    formContainerElem.style.display = 'none';
+    nameFormElem.style.display      = 'none';
+    messageContainerElem.classList.remove('shortsize');
+    messageContainerElem.classList.add('fullsize');
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[2] + userName + '! ' + greetings[3]);
+
+    // change styling and remove eventlistener
+    sendBtn.classList.remove('enabled');
+    sendBtn.classList.add('disabled');
+    sendBtn.removeEventListener('click', handleSendName)
+  }, 1000);
+
+  handleIntroToFriends();
 }
 
 
 // -------------------------------------------------------------
-function sendMessage(e) {
-  // Prevent refresh
-  e.preventDefault();
+function handleIntroToFriends() {
+
+  // mexican-palm-06
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[4]);
+  }, 5000);
+
+  // spanish-palm-03
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[5]);
+  }, 12000);
+
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[6]);
+  }, 16000);
+
+  setTimeout(() => {
+    handleAskForLocation();
+  }, 18000)
+}
+
+
+// -------------------------------------------------------------
+function handleAskForLocation() {
+  // assign event listener for send button
+  sendBtn.addEventListener('click', handleSendLocation);
+
+  formContainerElem.style.display = 'block';
+  locationFormElem.style.display  = 'block';
+  
+  messageContainerElem.classList.add('shortsize');
+  messageContainerElem.classList.remove('fullsize');
+  
+  sendBtn.classList.remove('disabled');
+  sendBtn.classList.add('enabled');
+}
+
+
+// -------------------------------------------------------------
+function handleSendLocation() {
 
   let countryName = countryListElem.options[countryListElem.selectedIndex].text;
   let cityName = cityListElem.options[cityListElem.selectedIndex].text;
-
-  // Prob better handled by setting some app state but it's fine
 
   // Get city object data
   let selectedCityObj = selectedCountry['cities'].filter(cityObj => {
@@ -231,4 +331,35 @@ function sendMessage(e) {
     country : countryName,
     city    : cityName
   });
+
+  setTimeout(() => {
+    formContainerElem.style.display = 'none';
+    locationFormElem.style.display  = 'none';
+    messageContainerElem.classList.remove('shortsize');
+    messageContainerElem.classList.add('fullsize');
+
+    // change styling and remove eventlistener
+    sendBtn.classList.remove('enabled');
+    sendBtn.classList.add('disabled');
+    sendBtn.removeEventListener('click', handleSendLocation)
+  }, 1000);
+
+
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[7] + countryName + '! ' + greetings[8]);
+  }, 3000);
+
+  handleGoodbye();
+}
+
+
+// -------------------------------------------------------------
+function handleGoodbye() {
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[9]);
+  }, 6000);
+
+  setTimeout(() => {
+    messageContainerElem.innerHTML += generateTextFromPalm(greetings[10]);
+  }, 9000);
 }
