@@ -232,16 +232,20 @@ function initConversation() {
   // Icky way to do this 💩
 
   setTimeout(() => {
+    socket.emit(palmId, {
+      msg: "hello_behavior"
+    });
+    
     messageContainerElem.innerHTML += generateTextFromPalm(greetings[0]);
   }, 2000);
   
   setTimeout(() => {
     messageContainerElem.innerHTML += generateTextFromPalm(greetings[1]);
-  }, 4000);
+  }, 7000);
 
   setTimeout(() => {
     handleAskForName();
-  }, 5000);
+  }, 8000);
 }
 
 // -------------------------------------------------------------

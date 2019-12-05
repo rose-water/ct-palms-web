@@ -45,6 +45,11 @@ mqttClient.on('error', (error) => {
 io.on('connection', client => {
   console.log('Socket client connected.');
 
+  client.on('brazil-palm-01', data => {
+    mqttClient.publish(baseUrl + topicsList[0], data.msg);
+  })
+  
+
   client.on('location-data', data => {
     mqttClient.publish(baseUrl + topicsList[0], data.country);
   });
